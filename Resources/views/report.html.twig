@@ -1,0 +1,105 @@
+{% set pageNumber = '' %}
+<style type="text/css">
+    #mainTable {
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    #mainTable th, #mainTable td {
+        padding: 8px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+    }
+    page { font-size: 8pt; }        
+
+    table.page_header {width: 100%; border: none; padding: 2mm; font-size: 8pt; }
+    table.page_footer {width: 100%; border: none; padding: 2mm; font-size: 8pt;}
+    div.note {border: solid 1mm #DDDDDD; background-color: #EEEEEE; padding: 2mm; border-radius: 2mm; width: 100%; }
+    ul.main { width: 95%; list-style-type: square; }
+    ul.main li { padding-bottom: 2mm; }
+    h1 { text-align: center; font-size: 12pt}
+    h3 { text-align: left; font-size: 10pt}
+</style>
+<page backtop="14mm" backbottom="14mm" backleft="10mm" backright="10mm" orientation="{{ report.orientation }}">
+    <page_header>
+        <table class="page_header">
+            <tr>
+                <td style="width: 33%; text-align: left">
+                    {{ report.headerLeft }}
+                </td>
+                <td style="width: 34%; text-align: center">
+                    {{ report.headerCenter }}
+                </td>
+                <td style="width: 33%; text-align: right">
+                    {{ report.headerRight }}
+                </td>
+            </tr>
+        </table>
+    </page_header>
+
+    <page_footer>
+        <table class="page_footer">
+            <tr>
+                <td style="width: 33%; text-align: left;">
+                    {{ report.footerLeft }}
+                </td>
+                <td style="width: 34%; text-align: center">
+                    {% if report.showPageNumber %}
+                        página [[page_cu]]/[[page_nb]]
+                    {% endif %}
+                </td>
+                <td style="width: 33%; text-align: right">
+                    {{ "now"|date("d/m/Y H:i") }}
+                </td>
+            </tr>
+        </table>
+    </page_footer>
+
+    {% if report.title is defined %}
+        <h1>{{ report.title }}</h1>
+    {% endif %}
+    {% if report.subTitle is defined %}
+        <h3>{{ report.subTitle }}</h3>
+    {% endif %}
+
+    {% for detail in report.details %}
+        <table id="mainTable">
+            {#            <col style="width: 30%">
+                        <col style="width: 30%">
+                        <col style="width: 40%">#}
+            <thead>
+                <tr>
+                    {% for key,value in detail.fields %}
+                        <th align="center">
+                            {{ value.fieldLabel | capitalize }}
+                        </th>
+                    {% endfor %}
+                </tr>
+            </thead>    
+            <tbody>
+                {% for key,value in detail.data  %}
+                    <tr>
+                        {% for keyFieldValue,valueFieldValue in value %}
+                            <td align="{{ detail.columnAlign[keyFieldValue] }}">{{ valueFieldValue }}</td>
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
+            </tbody>
+            <tfoot>
+                <tr>
+                    {% for key,value in detail.footer %}
+                        <th align="{{ value.align }}">
+                            {% if value %}
+                                {{ value.value | number_format(value.decimal) }}
+                            {% endif %}
+                        </th>
+                    {% endfor %}
+                </tr>
+            </tfoot>                
+        </table>
+    {% endfor %}
+</page>
+
+{#<page pageset="old">
+    <bookmark title="Balises spécifiques" level="2" ></bookmark>
+</page>#}
