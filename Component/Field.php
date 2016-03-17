@@ -20,7 +20,7 @@ class Field {
 
     private $fieldName;
     private $fieldLabel;
-    private $align = Self::AlignRight;
+    private $align = Self::AlignLeft;
     
     public function __construct($fieldName, $fieldLabel) {
         $this->fieldName = $fieldName;

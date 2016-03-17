@@ -1,7 +1,8 @@
 {
-    "name": "SenaiLibrary/ReportBundle",
+    "name": "senailibrary/ReportBundle",
     "description": "Geração e padronização de relatórios",
     "type": "symfony-bundle",
+    "minimum-stability": "dev",
     "authors": [{
             "name": "Rafael S. Ribeiro",
             "email": "rafael.s.ribeiro@sc.senai.br"
