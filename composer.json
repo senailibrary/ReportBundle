@@ -1,5 +1,5 @@
 {
-    "name": "senailibrary/ReportBundle",
+    "name": "senailibrary/report-bundle",
     "description": "Geração e padronização de relatórios",
     "type": "symfony-bundle",
     "minimum-stability": "dev",
