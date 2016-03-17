@@ -3,6 +3,7 @@
     "description": "Geração e padronização de relatórios",
     "type": "symfony-bundle",
     "minimum-stability": "dev",
+    "prefer-stable" : true,
     "authors": [{
             "name": "Rafael S. Ribeiro",
             "email": "rafael.s.ribeiro@sc.senai.br"
