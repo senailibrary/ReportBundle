@@ -1,5 +1,5 @@
 {
-    "name": "senailibrary/report-bundle",
+    "name": "senailibrary/reportbundle",
     "description": "Geração e padronização de relatórios",
     "type": "symfony-bundle",
     "minimum-stability": "dev",
@@ -24,8 +24,6 @@
         }
     },
     "target-dir": "SenaiLibrary/ReportBundle",
-    "repositories": [{
-        }],
     "extra": {
         "branch-alias": {
             "dev-master": "1.0-dev"
