@@ -14,14 +14,19 @@ namespace SenaiLibrary\ReportBundle\Component;
  * @author Rafael
  */
 class Field {
-    
+
     const AlignRight = 'right';
     const AlignLeft = 'left';
+    const FormatText = 'text';
+    const FormatNumber = 'number';
 
     private $fieldName;
     private $fieldLabel;
     private $align = Self::AlignLeft;
-    
+    private $length = 'auto';
+    private $format = Self::FormatText;
+    private $fontWeight = 'normal';
+
     public function __construct($fieldName, $fieldLabel) {
         $this->fieldName = $fieldName;
         $this->fieldLabel = $fieldLabel;
@@ -51,6 +56,33 @@ class Field {
 
     public function setAlign($align) {
         $this->align = $align;
+        return $this;
+    }
+
+    public function getLength() {
+        return $this->length;
+    }
+
+    public function getFormat() {
+        return $this->format;
+    }
+
+    public function setLength($length) {
+        $this->length = $length;
+        return $this;
+    }
+
+    public function setFormat($format) {
+        $this->format = $format;
+        return $this;
+    }
+
+    public function getFontWeight() {
+        return $this->fontWeight;
+    }
+
+    public function setFontWeight($fontWeight) {
+        $this->fontWeight = $fontWeight;
         return $this;
     }
 

@@ -23,6 +23,7 @@ class Detail {
     private $fields = array();
     private $footer = array();
     private $columnAlign = array();
+    private $columnFormat = array();
 
     /**
      * 
@@ -32,7 +33,6 @@ class Detail {
     public function __construct($collection, $fields = array()) {
         foreach ($fields as $key => $value) {
             $this->fields[$key] = new Field($key, $value);
-            $this->columnAlign[$key] = $this->fields[$key]->getAlign();
         }
         foreach ($this->fields as $key => $value) {
             $this->footer[$key] = null;
@@ -76,23 +76,41 @@ class Detail {
         return $this->columnAlign;
     }
 
+    public function getColumnFormat() {
+        return $this->columnFormat;
+    }
+
+    public function addFields(Field $field) {
+        $this->fields[$fieldResult->getFieldName()] = $field;
+    }
+
+    public function getFieldByName($fieldName) {
+        foreach ($this->fields as $field) {
+            if ($field->getFieldName() == $fieldName) {
+                return $field;
+            }
+        }
+    }
+
     public function addFieldsResult(FieldResult $fieldResult) {
         $this->fields[$fieldResult->getFieldName()] = new Field($fieldResult->getFieldName(), $fieldResult->getFieldLabel());
-        $this->columnAlign[$fieldResult->getFieldName()] = $fieldResult->getAlign();
         $this->footer[$fieldResult->getFieldName()] = null;
         $this->fieldsResult[] = $fieldResult;
+
+        return $this;
     }
 
     public function calculateData() {
-        $fieldsNames = $this->getArrayFieldsName();
         foreach ($this->collection as $class) {
             $properties = $this->getProperties($class);
             $arrayData = array();
-            foreach ($fieldsNames as $field) {
+            foreach ($this->fields as $field) {
                 foreach ($properties as $property) {
-                    if ($property->getName() == $field) {
+                    if ($property->getName() == $field->getFieldName()) {
                         $property->setAccessible(true);
-                        $arrayData[$property->getName()] = $property->getValue($class);
+                        $arrayData[$field->getFieldName()] = $property->getValue($class);
+                        $this->columnAlign[$field->getFieldName()] = $field->getAlign();
+                        $this->columnFormat[$field->getFieldName()] = $field->getFormat() ? $field->getFormat() : $this->getType($arrayData[$field->getFieldName()]);
                     }
                 }
             }
@@ -101,19 +119,21 @@ class Detail {
         $this->calculateFieldsResult();
     }
 
+    private function getType($value) {
+        switch (gettype($value)) {
+            case "double":
+                return Field::FormatNumber;
+            case "string":
+                return Field::FormatText;
+        }
+        return Field::FormatText;
+    }
+
     private function calculateFieldsResult() {
         foreach ($this->fieldsResult as $fieldResult) {
             $fieldResult->calculate($this->data);
             $this->footer[$fieldResult->getFieldName()] = $fieldResult;
         }
-    }
-
-    private function getArrayFieldsName() {
-        $fields = array();
-        foreach ($this->fields as $key => $value) {
-            $fields[] = $key;
-        }
-        return $fields;
     }
 
     private function getProperties($class) {
@@ -133,9 +153,8 @@ class Detail {
     private function validateDetail($class) {
         if ($class) {
             $arrayName = $this->getPropertyNameToArray($class);
-            $fieldsNames = $this->getArrayFieldsName();
-            foreach ($fieldsNames as $field) {
-                if (!in_array($field, $arrayName)) {
+            foreach ($this->fields as $field) {
+                if (!in_array($field->getFieldName(), $arrayName)) {
                     return false;
                 }
             }

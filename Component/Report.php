@@ -25,7 +25,7 @@ class Report {
     public function __construct() {
         $loader = new \Twig_Loader_Filesystem(__DIR__ . '/../Resources/views');
         $this->twig = new \Twig_Environment($loader);
-        $this->twig->getExtension('core')->setNumberFormat(2, '.', ',');
+        $this->twig->getExtension('core')->setNumberFormat(2, ',', '.');
     }
 
     public function renderView($template, $parameter = array()) {
