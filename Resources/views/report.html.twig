@@ -82,7 +82,7 @@
                         <tr>
                             {% for keyFieldValue,valueFieldValue in value %}
                                 <td align="{{ detail.columnAlign[keyFieldValue] }}">
-                                    {% if detail.columnFormat[keyFieldValue] == 'number' %}
+                                    {% if detail.columnFormat[keyFieldValue] is constant('SenaiLibrary\\ReportBundle\\Component\\Field::FormatNumber') %}
                                         {{ valueFieldValue | number_format(valueFieldValue.decimal)  }}
                                     {% else %}    
                                         {{ valueFieldValue }}
