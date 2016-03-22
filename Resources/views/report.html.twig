@@ -11,6 +11,12 @@
             text-align: left;
             border-bottom: 1px solid #ddd;
         }
+        
+        #mainTable tfoot th, #mainTable tfoot td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid whitesmoke;
+        }        
         page { font-size: 8pt; }        
 
         table.page_header {width: 100%; border: none; padding: 2mm; font-size: 8pt; }
@@ -20,6 +26,7 @@
         ul.main li { padding-bottom: 2mm; }
         h1 { text-align: center; font-size: 12pt}
         h3 { text-align: left; font-size: 10pt}
+        h4 { text-align: left; font-size: 8pt}
     </style>
     <page backtop="14mm" backbottom="14mm" backleft="10mm" backright="10mm" orientation="{{ report.orientation }}">
         <page_header>
@@ -64,6 +71,9 @@
         {% endif %}
 
         {% for detail in report.details %}
+            {% if report.subTitle is defined %}
+                <h4>{{ detail.title }}</h4>
+            {% endif %}
             <table id="mainTable">
                 {% for key,value in detail.fields %}
                     <col style="width: {{ value.length }}; font-weight: {{ value.fontWeight }}">
@@ -71,7 +81,7 @@
                 <thead>
                     <tr>
                         {% for key,value in detail.fields %}
-                            <th align="center">
+                            <th align="center" style="font-weight: bold;">
                                 {{ value.fieldLabel | capitalize }}
                             </th>
                         {% endfor %}
@@ -86,7 +96,7 @@
                                         {{ valueFieldValue | number_format(valueFieldValue.decimal)  }}
                                     {% else %}    
                                         {{ valueFieldValue }}
-                                    {% endif %}    
+                                    {% endif %}
                                 </td>
                             {% endfor %}
                         </tr>

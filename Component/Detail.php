@@ -24,6 +24,7 @@ class Detail {
     private $footer = array();
     private $columnAlign = array();
     private $columnFormat = array();
+    private $title;
 
     /**
      * 
@@ -31,13 +32,22 @@ class Detail {
      * @param array $fields
      */
     public function __construct($collection, $fields = array()) {
-        foreach ($fields as $key => $value) {
-            $this->fields[$key] = new Field($key, $value);
+        $this->collection = $collection;
+
+        if ($fields) {
+            foreach ($fields as $key => $value) {
+                $this->fields[$key] = new Field($key, $value);
+            }
+        } else {
+            foreach ($this->getProperties($this->collection[0]) as $field) {
+                $this->fields[$field->getName()] = new Field($field->getName(), $field->getName());
+            }                
         }
+
+
         foreach ($this->fields as $key => $value) {
             $this->footer[$key] = null;
         }
-        $this->collection = $collection;
 
         if (!$this->collection) {
             throw new Exception('Collection must have a value.');
@@ -79,6 +89,15 @@ class Detail {
     public function getColumnFormat() {
         return $this->columnFormat;
     }
+    
+    public function getTitle() {
+        return $this->title;
+    }
+
+    public function setTitle($title) {
+        $this->title = $title;
+        return $this;
+    }
 
     public function addFields(Field $field) {
         $this->fields[$fieldResult->getFieldName()] = $field;
@@ -93,11 +112,11 @@ class Detail {
     }
 
     public function addFieldsResult(FieldResult $fieldResult) {
-        $this->fields[$fieldResult->getFieldName()] = new Field($fieldResult->getFieldName(), $fieldResult->getFieldLabel());
+        $this->fields[$fieldResult->getFieldName()] = $fieldResult;
         $this->footer[$fieldResult->getFieldName()] = null;
         $this->fieldsResult[] = $fieldResult;
 
-        return $this;
+        return $fieldResult;
     }
 
     public function calculateData() {

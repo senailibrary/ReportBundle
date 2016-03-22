@@ -28,9 +28,11 @@ class FieldResult extends Field {
 
     public function __construct($fieldName, $fieldLabel, $operation, $data = null) {
         $this->data = $data;
+        $this->operation = $operation;
         $this->setFieldName($fieldName);
         $this->setFieldLabel($fieldLabel);
-        $this->operation = $operation;
+        $this->setFormat(Field::FormatNumber);
+        $this->setAlign(Field::AlignRight);
     }
 
     public function getValue() {
