@@ -41,7 +41,7 @@ class Detail {
         } else {
             foreach ($this->getProperties($this->collection[0]) as $field) {
                 $this->fields[$field->getName()] = new Field($field->getName(), $field->getName());
-            }                
+            }
         }
 
 
@@ -89,7 +89,7 @@ class Detail {
     public function getColumnFormat() {
         return $this->columnFormat;
     }
-    
+
     public function getTitle() {
         return $this->title;
     }
@@ -130,6 +130,7 @@ class Detail {
                         $arrayData[$field->getFieldName()] = $property->getValue($class);
                         $this->columnAlign[$field->getFieldName()] = $field->getAlign();
                         $this->columnFormat[$field->getFieldName()] = $field->getFormat() ? $field->getFormat() : $this->getType($arrayData[$field->getFieldName()]);
+                        $this->columnCaptalize[$field->getFieldName()] = $field->getCapitalize();
                     }
                 }
             }
@@ -140,12 +141,14 @@ class Detail {
 
     private function getType($value) {
         switch (gettype($value)) {
+            case "integer":
+                return Field::FormatInteger;
             case "double":
-                return Field::FormatNumber;
+                return Field::FormatDecimal;
             case "string":
                 return Field::FormatText;
         }
-        return Field::FormatText;
+        return is_object($value) && get_class($value) == "DateTime" ? Field::FormatDateTime : Field::FormatText;
     }
 
     private function calculateFieldsResult() {

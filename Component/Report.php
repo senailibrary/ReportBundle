@@ -114,7 +114,7 @@ class Report {
     public function renderPdf() {
         $this->calculateDetails();
         $html = $this->renderView('report.html.twig', array('report' => $this));
-        $html2pdf = new HTML2PDF('P', 'A4', 'pt', true, 'ISO-8859-1', array(0, 0, 0, 0));
+        $html2pdf = new HTML2PDF('P', 'A4', 'pt', true, 'UTF-8', array(0, 0, 0, 0));
         $html2pdf->pdf->SetDisplayMode('fullpage');
         $html2pdf->writeHTML($html);
         return $html2pdf->Output($this->title . '.pdf');

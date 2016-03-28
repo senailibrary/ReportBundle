@@ -18,14 +18,18 @@ class Field {
     const AlignRight = 'right';
     const AlignLeft = 'left';
     const FormatText = 'text';
-    const FormatNumber = 'number';
+    const FormatDecimal = 'decimal';
+    const FormatInteger = 'integer';
+    const FormatDate = 'date';
+    const FormatDateTime = 'datetime';
 
     private $fieldName;
     private $fieldLabel;
     private $align = Self::AlignLeft;
     private $length = 'auto';
-    private $format = Self::FormatText;
+    private $format = null;
     private $fontWeight = 'normal';
+    private $capitalize = false;
 
     public function __construct($fieldName, $fieldLabel) {
         $this->fieldName = $fieldName;
@@ -83,6 +87,15 @@ class Field {
 
     public function setFontWeight($fontWeight) {
         $this->fontWeight = $fontWeight;
+        return $this;
+    }
+
+    public function getCapitalize() {
+        return $this->capitalize;
+    }
+
+    public function setCapitalize($capitalize) {
+        $this->capitalize = $capitalize;
         return $this;
     }
 

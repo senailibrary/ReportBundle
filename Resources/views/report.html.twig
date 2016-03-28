@@ -12,7 +12,14 @@
             text-align: left;
             border-bottom: 1px solid #ddd;
         }
-        
+
+        .striped {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+            background-color: rgb(249, 249, 249);
+        }                
+
         #mainTable tfoot th, #mainTable tfoot td {
             padding: 8px;
             text-align: left;
@@ -90,13 +97,22 @@
                 </thead>    
                 <tbody>
                     {% for key,value in detail.data  %}
-                        <tr>
+                        {% set class = loop.index is divisible by(2) ? "striped" : "" %}
+                        <tr class="{{ class }}">
                             {% for keyFieldValue,valueFieldValue in value %}
                                 <td align="{{ detail.columnAlign[keyFieldValue] }}">
-                                    {% if detail.columnFormat[keyFieldValue] is constant('SenaiLibrary\\ReportBundle\\Component\\Field::FormatNumber') %}
+                                    {% if detail.columnFormat[keyFieldValue] is constant('SenaiLibrary\\ReportBundle\\Component\\Field::FormatDecimal') %}
                                         {{ valueFieldValue | number_format(valueFieldValue.decimal)  }}
+                                    {% elseif detail.columnFormat[keyFieldValue] is constant('SenaiLibrary\\ReportBundle\\Component\\Field::FormatInteger') %}
+                                        {{ valueFieldValue }}
+                                    {% elseif detail.columnFormat[keyFieldValue] is constant('SenaiLibrary\\ReportBundle\\Component\\Field::FormatDateTime') %}
+                                        {{ valueFieldValue | date("d/m/Y")}}                                        
                                     {% else %}    
-                                        {{ valueFieldValue | convert_encoding('UTF-8', report.charset) }}
+                                        {% if detail.columnCapitalize[keyFieldValue]  %}                                        
+                                            {{ valueFieldValue | capitalize | convert_encoding('UTF-8', report.charset) }}
+                                        {% else %}    
+                                            {{ valueFieldValue | convert_encoding('UTF-8', report.charset) }}
+                                        {% endif %}
                                     {% endif %}
                                 </td>
                             {% endfor %}
