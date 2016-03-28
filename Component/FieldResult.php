@@ -94,11 +94,7 @@ class FieldResult extends Field {
     }
 
     private function isCalculate($value) {
-        var_dump($this->computeNull);
-        var_dump(isset($value));
-        var_dump($value);
-        die();
-        return !($this->computeNull xor isset($value));
+        return isset($value) || ($this->computeNull && !isset($value));
     }
 
     private function builtInSum() {
