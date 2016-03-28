@@ -1,5 +1,6 @@
 {% spaceless %}
     {% set pageNumber = '' %}
+    <!-- for HTML5 -->
     <style type="text/css">
         #mainTable {
             border-collapse: collapse;
@@ -64,15 +65,15 @@
         </page_footer>
 
         {% if report.title is defined %}
-            <h1>{{ report.title }}</h1>
+            <h1>{{ report.title | convert_encoding('UTF-8', report.charset)}}</h1>
         {% endif %}
         {% if report.subTitle is defined %}
-            <h3>{{ report.subTitle }}</h3>
+            <h3>{{ report.subTitle | convert_encoding('UTF-8', report.charset) }}</h3>
         {% endif %}
 
         {% for detail in report.details %}
             {% if report.subTitle is defined %}
-                <h4>{{ detail.title }}</h4>
+                <h4>{{ detail.title | convert_encoding('UTF-8', report.charset) }}</h4>
             {% endif %}
             <table id="mainTable">
                 {% for key,value in detail.fields %}
@@ -82,7 +83,7 @@
                     <tr>
                         {% for key,value in detail.fields %}
                             <th align="center" style="font-weight: bold;">
-                                {{ value.fieldLabel | capitalize }}
+                                {{ value.fieldLabel | capitalize | convert_encoding('UTF-8', report.charset) }}
                             </th>
                         {% endfor %}
                     </tr>
@@ -95,7 +96,7 @@
                                     {% if detail.columnFormat[keyFieldValue] is constant('SenaiLibrary\\ReportBundle\\Component\\Field::FormatNumber') %}
                                         {{ valueFieldValue | number_format(valueFieldValue.decimal)  }}
                                     {% else %}    
-                                        {{ valueFieldValue }}
+                                        {{ valueFieldValue | convert_encoding('UTF-8', report.charset) }}
                                     {% endif %}
                                 </td>
                             {% endfor %}
@@ -116,8 +117,4 @@
             </table>
         {% endfor %}
     </page>
-
-    {#<page pageset="old">
-        <bookmark title="Balises spécifiques" level="2" ></bookmark>
-    </page>#}
 {% endspaceless %}

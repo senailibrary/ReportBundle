@@ -22,7 +22,7 @@ class FieldResult extends Field {
 
     private $operation;
     private $data;
-    private $nullValue = null;
+    private $computeNull = true;
     private $value = 0;
     private $decimal = 2;
 
@@ -56,6 +56,15 @@ class FieldResult extends Field {
         $this->decimal = $decimal;
         return $this;
     }
+    
+    public function getComputeNull() {
+        return $this->computeNull;
+    }
+
+    public function setComputeNull($computeNull) {
+        $this->computeNull = $computeNull;
+        return $this;
+    }
 
     public function calculate($data) {
         $this->data = $data;
@@ -84,12 +93,12 @@ class FieldResult extends Field {
         }
     }
 
-    private function isNull($value) {
-        return isset($this->nullValue) || $this->nullValue == $value;
-    }
-
     private function isCalculate($value) {
-        return true; //(!$this->isNull($value) || !($this->computeNulls xor $this->isNull($value)));
+        var_dump($this->computeNull);
+        var_dump(isset($value));
+        var_dump($value);
+        die();
+        return !($this->computeNull xor isset($value));
     }
 
     private function builtInSum() {

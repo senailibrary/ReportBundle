@@ -21,6 +21,7 @@ class Report {
     private $showPageNumber = true;
     private $orientation = Self::Portrait;
     private $details = array();
+    private $charset = 'UTF-8';
 
     public function __construct() {
         $loader = new \Twig_Loader_Filesystem(__DIR__ . '/../Resources/views');
@@ -100,11 +101,20 @@ class Report {
     public function getDetails() {
         return $this->details;
     }
+    
+    public function getCharset() {
+        return $this->charset;
+    }
+
+    public function setCharset($charset) {
+        $this->charset = $charset;
+        return $this;
+    }
 
     public function renderPdf() {
         $this->calculateDetails();
         $html = $this->renderView('report.html.twig', array('report' => $this));
-        $html2pdf = new HTML2PDF('P', 'A4', 'pt', true, 'UTF-8', array(0, 0, 0, 0));
+        $html2pdf = new HTML2PDF('P', 'A4', 'pt', true, 'ISO-8859-1', array(0, 0, 0, 0));
         $html2pdf->pdf->SetDisplayMode('fullpage');
         $html2pdf->writeHTML($html);
         return $html2pdf->Output($this->title . '.pdf');
