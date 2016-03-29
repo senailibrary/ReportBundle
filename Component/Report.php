@@ -101,7 +101,7 @@ class Report {
     public function getDetails() {
         return $this->details;
     }
-    
+
     public function getCharset() {
         return $this->charset;
     }
@@ -124,11 +124,11 @@ class Report {
         $html = $this->renderView('report.html.twig', array('report' => $this));
         return new Response($html);
     }
-    
+
     private function calculateDetails() {
         foreach ($this->details as $detail) {
             $detail->calculateData();
-        }        
+        }
     }
 
 }

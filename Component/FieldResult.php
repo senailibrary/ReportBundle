@@ -154,7 +154,7 @@ class FieldResult extends Field {
                 $count ++;
             }
         }
-        $this->value = $value / $count;
+        $this->value = $count > 0 ? $value / $count : 0;
     }
 
     private function builtInFirst() {

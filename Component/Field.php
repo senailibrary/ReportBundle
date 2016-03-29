@@ -22,6 +22,7 @@ class Field {
     const FormatInteger = 'integer';
     const FormatDate = 'date';
     const FormatDateTime = 'datetime';
+    const FormatCurrency = 'currency';
 
     private $fieldName;
     private $fieldLabel;
