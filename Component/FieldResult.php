@@ -25,13 +25,14 @@ class FieldResult extends Field {
     private $computeNull = true;
     private $value = 0;
     private $decimal = 2;
+    private $text;
 
     public function __construct($fieldName, $fieldLabel, $operation, $data = null) {
         $this->data = $data;
         $this->operation = $operation;
         $this->setFieldName($fieldName);
         $this->setFieldLabel($fieldLabel);
-        $this->setFormat(Field::FormatNumber);
+        $this->setFormat(Field::FormatDecimal);
         $this->setAlign(Field::AlignRight);
     }
 
@@ -56,13 +57,22 @@ class FieldResult extends Field {
         $this->decimal = $decimal;
         return $this;
     }
-    
+
     public function getComputeNull() {
         return $this->computeNull;
     }
 
     public function setComputeNull($computeNull) {
         $this->computeNull = $computeNull;
+        return $this;
+    }
+
+    public function getText() {
+        return $this->text;
+    }
+
+    public function setText($text) {
+        $this->text = $text;
         return $this;
     }
 
